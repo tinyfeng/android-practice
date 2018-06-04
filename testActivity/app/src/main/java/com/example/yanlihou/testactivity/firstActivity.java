@@ -1,7 +1,10 @@
 package com.example.yanlihou.testactivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +20,21 @@ public class firstActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    String res = data.getStringExtra("res");
+                    Log.d("firstActivityRes", res);
+                }
+                break;
+            default:
+                Log.d("firstActivity", String.valueOf(requestCode));
+        }
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.first_layout);
@@ -24,8 +42,14 @@ public class firstActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
+                Intent intent = new Intent("com.example.yanlihou.ACTION_START");
+                intent.addCategory("com.example.yanlihou.MY_CATEGORY");
+                */
+                Intent intent = new Intent(firstActivity.this, secondActivity.class);
+                intent.putExtra("test", "test1");
+                startActivityForResult(intent, 1);
                 Toast.makeText(firstActivity.this, "click", Toast.LENGTH_SHORT).show();
-                finish();
             }
         });
     }
